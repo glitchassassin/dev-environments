@@ -1,16 +1,18 @@
-# Install oh-my-zsh
+#! /usr/bin/env zsh
+set -e 
+
 cd /tmp/
 
-# Install zsh
-apt update && apt install -y zsh
-CHSH="yes" RUNZSH="no" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Install oh-my-zsh
+KEEP_ZSHRC="yes" CHSH="yes" RUNZSH="no" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
 
 # Install neovim from appimage
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 chmod u+x nvim.appimage
-./nvim.appimage --appimage-extract
+./nvim.appimage --appimage-extract > /dev/null 2>&1
 
-mv squashfs-root /
+mv squashfs-root / > /dev/null 2>&1
 ln -s /squashfs-root/AppRun /usr/bin/nvim
 
 # Install lazygit
@@ -32,5 +34,7 @@ curl -Lo fd.deb "https://github.com/sharkdp/fd/releases/latest/download/fd_${FD_
 dpkg -i fd.deb
 
 # clone config
-git clone https://github.com/glitchassassin/nvim-config ~/.config/nvim
+git clone -b v10 https://github.com/glitchassassin/nvim-config ~/.config/nvim
+
+nvim --headless "+Lazy! sync" +qa
 
