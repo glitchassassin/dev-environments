@@ -3,9 +3,8 @@ set -e
 
 cd /tmp/
 
-# Install oh-my-zsh
-KEEP_ZSHRC="yes" CHSH="yes" RUNZSH="no" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+node --version
+npm --version
 
 # Install neovim from appimage
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
@@ -36,5 +35,5 @@ dpkg -i fd.deb
 # clone config
 git clone -b v10 https://github.com/glitchassassin/nvim-config ~/.config/nvim
 
-nvim --headless "+Lazy! sync" +qa
+nvim --headless -c "Lazy! sync" -c "sleep 45" -c "qa"
 

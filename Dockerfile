@@ -15,14 +15,18 @@ COPY .zshrc /root/
 COPY .p10k.zsh /root/
 COPY configure.sh /tmp/
 
+# Install oh-my-zsh
+RUN KEEP_ZSHRC="yes" CHSH="yes" RUNZSH="no" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
+    && git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+
+SHELL ["/bin/zsh", "-l", "-c"]
+
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
     && . ~/.nvm/nvm.sh \
-    && nvm install --lts \
-    && nvm use --lts
+    && nvm install 20 \
+    && nvm use 20
 
-SHELL ["/bin/zsh", "-c"]
-
-RUN /tmp/configure.sh
+RUN . ~/.zshrc && /tmp/configure.sh
 
 # Set zsh as the default shell
-CMD ["zsh"]
+CMD ["zsh", "-l"]
