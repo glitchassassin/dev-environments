@@ -1,18 +1,16 @@
 #! /usr/bin/env zsh
-set -e 
+set -ex 
 
 cd /tmp/
 
 node --version
 npm --version
 
-# Install neovim from appimage
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-chmod u+x nvim.appimage
-./nvim.appimage --appimage-extract > /dev/null 2>&1
-
-mv squashfs-root / > /dev/null 2>&1
-ln -s /squashfs-root/AppRun /usr/bin/nvim
+# Install neovim from archive
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+rm -rf /opt/nvim
+tar -C /opt -xzf nvim-linux64.tar.gz
+ln -s /opt/nvim-linux64/bin/nvim /usr/bin/nvim
 
 # Install lazygit
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
