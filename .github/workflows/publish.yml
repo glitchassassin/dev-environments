@@ -31,7 +31,7 @@ jobs:
 
       # Build the Docker image with the base image as a build argument
       - name: Build the Docker image
-        run: docker build --build-arg BASE_IMAGE=${{ matrix.image }} -t glitchassassin/devcontainer:${{ matrix.image }} .
+        run: docker build --build-arg="BASE_IMAGE=${{ matrix.image }}" -t glitchassassin/devcontainer:${{ matrix.image }} .
 
       # Push the Docker image to the registry
       - name: Push the Docker image
