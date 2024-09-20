@@ -1,0 +1,35 @@
+name: Build and Push Docker Images
+
+on:
+  schedule:
+    # Run the job every Sunday at 00:00 UTC
+    - cron: "0 0 * * 0"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        image:
+          - python_3.10
+          - python_3.11
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Log in to Docker Hub using a Personal Access Token
+      - name: Log in to Docker Hub with PAT
+        env:
+          DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
+        run: echo "${DOCKER_PAT}" | docker login -u glitchassassin --password-stdin
+
+      # Build the Docker image with the base image as a build argument
+      - name: Build the Docker image
+        run: docker build --build-arg BASE_IMAGE=${{ matrix.image }} -t glitchassassin/devcontainer:${{ matrix.image }} .
+
+      # Push the Docker image to the registry
+      - name: Push the Docker image
+        run: docker push glitchassassin/devcontainer:${{ matrix.image }}
