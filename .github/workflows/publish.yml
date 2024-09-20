@@ -14,9 +14,9 @@ jobs:
 
     strategy:
       matrix:
-        image:
-          - python_3.10
-          - python_3.11
+        base_image:
+          - python:3.10
+          - python:3.11
 
     steps:
       # Checkout the code from the repository
@@ -31,8 +31,13 @@ jobs:
 
       # Build the Docker image with the base image as a build argument
       - name: Build the Docker image
-        run: docker build --build-arg="BASE_IMAGE=${{ matrix.image }}" -t glitchassassin/devcontainer:${{ matrix.image }} .
+        run: |
+          # Extract tag from the base image
+          TAG=$(echo "${{ matrix.base_image }}" | tr -d '.:' | tr - _)
+          docker build --build-arg BASE_IMAGE=${{ matrix.base_image }} -t glitchassassin/devcontainer:${TAG} .
 
       # Push the Docker image to the registry
       - name: Push the Docker image
-        run: docker push glitchassassin/devcontainer:${{ matrix.image }}
+        run: |
+          TAG=$(echo "${{ matrix.base_image }}" | tr -d '.:' | tr - _)
+          docker push glitchassassin/devcontainer:${TAG}
