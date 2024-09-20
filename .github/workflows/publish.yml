@@ -1,6 +1,9 @@
 name: Build and Push Docker Images
 
 on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch (modify if needed)
   schedule:
     # Run the job every Sunday at 00:00 UTC
     - cron: "0 0 * * 0"
