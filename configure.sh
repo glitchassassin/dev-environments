@@ -12,6 +12,10 @@ rm -rf /opt/nvim
 tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/bin/nvim
 
+# Install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+
 # Install lazygit
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
@@ -36,8 +40,24 @@ dpkg -i fd.deb
 echo "Installing OpenAI Codex CLI..."
 npm install -g @openai/codex
 
-# clone config
-git clone -b v10 https://github.com/glitchassassin/nvim-config ~/.config/nvim
+# Add GitHub SSH host key to known_hosts
+echo "Adding GitHub SSH host key..."
+mkdir -p ~/.ssh
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+# clone nvim config via HTTPS (SSH keys aren't available until runtime)
+git clone https://github.com/glitchassassin/nvim-config.git ~/.config/nvim
+cd ~/.config/nvim
+git remote set-url origin git@github.com:glitchassassin/nvim-config.git
+
+# clone tmux config via HTTPS (SSH keys aren't available until runtime)
+git clone https://github.com/glitchassassin/tmux.git ~/.config/tmux
+cd ~/.config/tmux
+git remote set-url origin git@github.com:glitchassassin/tmux.git
+
+# install tmux plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+~/.tmux/plugins/tpm/bin/install_plugins
 
 nvim --headless -c "Lazy! sync" -c "sleep 45" -c "qa"
 

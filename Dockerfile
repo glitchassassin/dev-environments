@@ -7,13 +7,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update the package list and install dependencies
 RUN apt-get update && \
-    apt-get install -y zsh curl git man && \
+    apt-get install -y zsh curl git man tmux && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 COPY .zshrc /root/
 COPY .p10k.zsh /root/
 COPY configure.sh /tmp/
+COPY .gitconfig /root/
 
 # Install oh-my-zsh
 RUN KEEP_ZSHRC="yes" CHSH="yes" RUNZSH="no" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
@@ -27,6 +28,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     && nvm use 20
 
 RUN . ~/.zshrc && /tmp/configure.sh
+
+WORKDIR /root
 
 # Set zsh as the default shell
 CMD ["zsh", "-l"]
