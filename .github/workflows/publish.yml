@@ -15,8 +15,7 @@ jobs:
     strategy:
       matrix:
         base_image:
-          - python:3.10
-          - python:3.11
+          - python:3.12
 
     steps:
       # Checkout the code from the repository

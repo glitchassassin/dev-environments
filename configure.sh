@@ -7,10 +7,10 @@ node --version
 npm --version
 
 # Install neovim from archive
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
 rm -rf /opt/nvim
-tar -C /opt -xzf nvim-linux64.tar.gz
-ln -s /opt/nvim-linux64/bin/nvim /usr/bin/nvim
+tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/bin/nvim
 
 # Install lazygit
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
@@ -31,6 +31,10 @@ FD_VERSION=$(curl -s "https://api.github.com/repos/sharkdp/fd/releases/latest" |
 echo "fd version: ${FD_VERSION}"
 curl -Lo fd.deb "https://github.com/sharkdp/fd/releases/latest/download/fd_${FD_VERSION}_amd64.deb"
 dpkg -i fd.deb
+
+# Install OpenAI Codex CLI
+echo "Installing OpenAI Codex CLI..."
+npm install -g @openai/codex
 
 # clone config
 git clone -b v10 https://github.com/glitchassassin/nvim-config ~/.config/nvim
