@@ -34,7 +34,7 @@ jobs:
         run: |
           # Extract tag from the base image
           TAG=$(echo "${{ matrix.base_image }}" | tr -d '.:' | tr - _)
-          docker build --build-arg BASE_IMAGE=${{ matrix.base_image }} -t glitchassassin/devcontainer:${TAG} .
+          docker build --build-arg BASE_IMAGE=${{ matrix.base_image }} --platform linux/amd64,linux/arm64 -t glitchassassin/devcontainer:${TAG} .
 
       # Push the Docker image to the registry
       - name: Push the Docker image

@@ -6,11 +6,21 @@ cd /tmp/
 node --version
 npm --version
 
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+  NVIMEXT="x86_64"
+  FDEXT="amd64"
+else
+  NVIMEXT="arm64"
+  FDEXT="arm64"
+fi
+
 # Install neovim from archive
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${NVIMEXT}.tar.gz
 rm -rf /opt/nvim
-tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-ln -s /opt/nvim-linux-x86_64/bin/nvim /usr/bin/nvim
+tar -C /opt -xzf nvim-linux-${NVIMEXT}.tar.gz
+NVIM_DIR="nvim-linux-${NVIMEXT}"
+ln -s /opt/${NVIM_DIR}/bin/nvim /usr/bin/nvim
 
 # Install fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -18,22 +28,16 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 # Install lazygit
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_${NVIMEXT}.tar.gz"
 tar xf lazygit.tar.gz lazygit
 install lazygit /usr/local/bin
 mkdir -p /root/.config/lazygit/
 touch /root/.config/lazygit/config.yml
 
-# Install ripgrep
-RIPGREP_VERSION=$(curl -s "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
-echo "Ripgrep version: ${RIPGREP_VERSION}"
-curl -Lo ripgrep.deb "https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_${RIPGREP_VERSION}-1_amd64.deb"
-dpkg -i ripgrep.deb
-
 # Install fd
 FD_VERSION=$(curl -s "https://api.github.com/repos/sharkdp/fd/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 echo "fd version: ${FD_VERSION}"
-curl -Lo fd.deb "https://github.com/sharkdp/fd/releases/latest/download/fd_${FD_VERSION}_amd64.deb"
+curl -Lo fd.deb "https://github.com/sharkdp/fd/releases/latest/download/fd_${FD_VERSION}_${FDEXT}.deb"
 dpkg -i fd.deb
 
 # Install OpenAI Codex CLI

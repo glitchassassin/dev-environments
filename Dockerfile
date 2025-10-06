@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update the package list and install dependencies
 RUN apt-get update && \
-    apt-get install -y zsh curl git man tmux && \
+    apt-get install -y zsh curl git man tmux ripgrep && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
