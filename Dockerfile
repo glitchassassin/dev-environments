@@ -31,5 +31,5 @@ RUN . ~/.zshrc && /tmp/configure.sh
 
 WORKDIR /root
 
-# Set zsh as the default shell
-CMD ["zsh", "-l"]
+# Launch directly into tmux
+CMD ["tmux", "-2"]
