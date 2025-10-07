@@ -63,5 +63,7 @@ git remote set-url origin git@github.com:glitchassassin/tmux.git
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ~/.tmux/plugins/tpm/bin/install_plugins
 
-nvim --headless -c "Lazy! sync" -c "sleep 45" -c "qa"
+# configure workspace as safe directory
+git config --global --add safe.directory /workspace
 
+nvim --headless -c "Lazy! sync" -c "sleep 45" -c "qa"
