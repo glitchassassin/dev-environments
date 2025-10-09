@@ -66,4 +66,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # configure workspace as safe directory
 git config --global --add safe.directory /workspace
 
+# install poetry
+pipx install poetry==2.1.1
+pipx ensurepath
+
 nvim --headless -c "Lazy! sync" -c "sleep 45" -c "qa"
